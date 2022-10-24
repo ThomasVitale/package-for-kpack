@@ -1,0 +1,19 @@
+---
+apiVersion: kpack.io/v1alpha2
+kind: ClusterBuilder
+metadata:
+  name: default
+spec:
+  serviceAccountRef:
+    name: kadras-install-sa
+    namespace: carvel-test
+  tag: test-registry.oci.svc.cluster.local:443/kpack:clusterbuilder-default
+  stack:
+    name: default
+    kind: ClusterStack
+  store:
+    name: default
+    kind: ClusterStore
+  order:
+    - group:
+        - id: paketo-buildpacks/java

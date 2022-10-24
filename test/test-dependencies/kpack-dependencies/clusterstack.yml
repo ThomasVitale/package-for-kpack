@@ -1,0 +1,11 @@
+---
+apiVersion: kpack.io/v1alpha2
+kind: ClusterStack
+metadata:
+  name: default
+spec:
+  id: "io.buildpacks.stacks.bionic"
+  buildImage:
+    image: paketobuildpacks/build-bionic-base
+  runImage:
+    image: paketobuildpacks/run-bionic-base

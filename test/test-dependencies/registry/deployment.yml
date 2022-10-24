@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-registry
+  namespace: oci
+spec:
+  selector:
+    matchLabels:
+      name: test-registry
+  template:
+    metadata:
+      name: test-registry
+      labels:
+        name: test-registry
+    spec:
+      volumes:
+        - name: htpasswd
+          secret:
+            secretName: test-registry-auth
+        - name: tls
+          secret:
+            secretName: test-registry-tls
+        - name: storage
+          emptyDir: {}
+      containers:
+        - name: test-registry
+          image: registry:2
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 443
+          env:
+            - name: REGISTRY_HTTP_ADDR
+              value: "0.0.0.0:443"
+            - name: REGISTRY_HTTP_TLS_CERTIFICATE
+              value: "/certs/domain.crt"
+            - name: REGISTRY_HTTP_TLS_KEY
+              value: "/certs/domain.key"
+            - name: REGISTRY_AUTH
+              value: "htpasswd"
+            - name: REGISTRY_AUTH_HTPASSWD_REALM
+              value: "realm"
+            - name: REGISTRY_AUTH_HTPASSWD_PATH
+              value: "/auth/htpasswd"
+          volumeMounts:
+            # - name: config
+            #   mountPath: /etc/docker/registry
+            #   readOnly: true
+            - name: htpasswd
+              mountPath: /auth
+              readOnly: true
+            - name: tls
+              mountPath: /certs
+              readOnly: true
+            - name: storage
+              mountPath: /var/lib/registry

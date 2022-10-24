@@ -1,0 +1,44 @@
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: kpack-values
+  namespace: carvel-test
+stringData:
+  values.yaml: |
+    kp_default_repository: test-registry.oci.svc.cluster.local:443/kpack
+    kp_default_repository_username: testuser
+    kp_default_repository_password: testpassword
+    ca_cert_data: |-
+      -----BEGIN CERTIFICATE-----
+      MIIFhTCCA22gAwIBAgIUP9DN8mljEmVLt8KGQxHWxNXRVb0wDQYJKoZIhvcNAQEL
+      BQAwRTELMAkGA1UEBhMCQVUxEzARBgNVBAgMClNvbWUtU3RhdGUxITAfBgNVBAoM
+      GEludGVybmV0IFdpZGdpdHMgUHR5IEx0ZDAeFw0yMjEwMDkxMTU4MzNaFw0yMzEw
+      MDkxMTU4MzNaMEUxCzAJBgNVBAYTAkFVMRMwEQYDVQQIDApTb21lLVN0YXRlMSEw
+      HwYDVQQKDBhJbnRlcm5ldCBXaWRnaXRzIFB0eSBMdGQwggIiMA0GCSqGSIb3DQEB
+      AQUAA4ICDwAwggIKAoICAQCpMG2zyoNpTXad0RlVY+10EeJqhb+6uiF3X92l8XHY
+      nUqVbsVctnLLcZKOBC2Jg2YlEbvDBri+5czPwECzSF5n+rMZLX18iC2+AAJdOnlf
+      vabsIGmaXK0k1mlujrNcljaQ/L5bg4hEWd3+kbMmThtOK8SnQeDLZy0/U/ecIUjN
+      RrszFW9AIR7ukK+wpTxrQkfswH4ydsEe6UD27RyyRTrphbEy5pJSY00ZydIH9uyk
+      sC3Rx21R7y39tBXg0wQQNv68jYxtHk8yeCUnpj+Q0aShXGmLJyxeGMBkHbo2/+hi
+      gK0rDTMnQlKvlnpw0t6BebMpmcj9ZiGAQum3aXU5h4eKGyd+UNAUESG6b4GZ2abC
+      0kSHnqH46JEyHVJoYTBm5jtnrTmEnnRcQnuNlZzYPpt3CzlXt6okC0miNg/y5gjF
+      JrOH+gjgkQJXeBHSd7fU2Qaz2SG/xOd4fhRDv9C6zMQDSSXxMCv7YfZ7JJT7ZQ8L
+      HlvLGw7n+Eq/OIG/59GAeRbxMjZHPchqnPdDLNu0I61OVxH3pVp1qnY7vTex7y9e
+      PKRabqzRahz/BvMoL1SmLUOto7om9BCWWYYOPCdzAbFIRb8rGPSi9ROTb/MS9eLl
+      JGbrrVQvd42tVqXByPp1LONgY8SI23T0rRYEEu7AP6zCnhCpzdXL5HhZvFLb6G72
+      xQIDAQABo20wazAdBgNVHQ4EFgQU+WSKxmCcWac5b+gl7CKERjAlxvwwHwYDVR0j
+      BBgwFoAU+WSKxmCcWac5b+gl7CKERjAlxvwwDwYDVR0TAQH/BAUwAwEB/zAYBgNV
+      HREEETAPgg10ZXN0LXJlZ2lzdHJ5MA0GCSqGSIb3DQEBCwUAA4ICAQCHoT+7Fb+S
+      LdGbqVJndpvozdZvi6cumA3+3QBBw+ytX+qnaDNXymHLUPiFhj+t0oyVvuqorSoG
+      aCWt9job6EARMARnEEUirTKQBQkZ3/uXfQCAt/1azdEJ5lRKVr/0ZEmv57ocy20F
+      4R0beDI4HvHsS7IbgHvL6qdMJm+2t/Ymw/5k8jVG3R0JD8N0H0NlhUfuEQKc9u6c
+      XyQdMEVrcwYDLK9rCdBx3wDmabPGuOUKzakB3Aees+vcvVhhhMAmOMydBimM/u5e
+      eak1E4JXorqhtS65I4zbgUhJFy7Gfu67XUl00dcj6daxE+F8oocYXatGLmMRVe6b
+      TK6P2/FqA3P5vyerRTRZWsDUI1fFtPkgtyPtWNiyq7Gao4QIQd52SOtmGpQtVbeJ
+      PM2UZVpTUdruA+z3ndKQFtKrcqX8uXhNMxa41oVo3Nx3GCHFJxhjvMBRqe1GHNFV
+      Eisuiv10Hn4PJyYN6B5j0EHmolsAGOXEYaIAvnKlLQPTI6j7XkCP9ub5QyZv5wEV
+      biDn54LzE4QDPQf+yU8ByE2JxFR6brUjJ3t+92ZcycyW9VqxAB+8ezC0WHmyRdBO
+      f1NIybQZTuuBBCn9/2wADPkp63DB8+jZKaV1hStzXVD3xK/ZlqmvEls9xdx1o87k
+      bidZX2qHLceCGzklZEJh2h1LG9t+RiYgcw==
+      -----END CERTIFICATE-----
