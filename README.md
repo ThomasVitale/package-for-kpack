@@ -1,6 +1,6 @@
 # Kpack
 
-This project provides a [Carvel package](https://carvel.dev/kapp-controller/docs/latest/packaging) for [kpack](https://github.com/projectkpack/kpack), a Kubernetes-native implementation of Cloud Native Buildpacks to build OCI images from within the cluster.
+This project provides a [Carvel package](https://carvel.dev/kapp-controller/docs/latest/packaging) for [kpack](https://github.com/pivotal/kpack), a Kubernetes-native implementation of Cloud Native Buildpacks to build OCI images from within the cluster.
 
 ## Components
 
