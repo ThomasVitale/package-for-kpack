@@ -4,9 +4,9 @@ metadata:
   creationTimestamp: null
   name: kpack.packages.kadras.io.0.0.0
 spec:
+  capacityRequirementsDescription: Registry with > 1GB available space
   licenses:
   - Apache 2.0
-  capacityRequirementsDescription: Registry with > 1GB available space
   refName: kpack.packages.kadras.io
   releaseNotes: https://github.com/pivotal/kpack/releases
   releasedAt: null

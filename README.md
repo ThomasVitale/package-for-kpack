@@ -9,8 +9,7 @@ This project provides a [Carvel package](https://carvel.dev/kapp-controller/docs
 ## Prerequisites
 
 * Install the [`kctrl`](https://carvel.dev/kapp-controller/docs/latest/install/#installing-kapp-controller-cli-kctrl) CLI to manage Carvel packages in a convenient way.
-* Ensure [kapp-controller](https://carvel.dev/kapp-controller) is deployed in your Kubernetes cluster. You can do that with Carvel
-[`kapp`](https://carvel.dev/kapp/docs/latest/install) (recommended choice) or `kubectl`.
+* Ensure [kapp-controller](https://carvel.dev/kapp-controller) is deployed in your Kubernetes cluster. You can do that with Carvel [`kapp`](https://carvel.dev/kapp/docs/latest/install) (recommended choice) or `kubectl`.
 
 ```shell
 kapp deploy -a kapp-controller -y \
@@ -39,7 +38,7 @@ Either way, you can then install the kpack package using [`kctrl`](https://carve
 ```shell
 kctrl package install -i kpack \
     -p kpack.packages.kadras.io \
-    -v 0.7.1 \
+    -v 0.7.2 \
     -n carvel-packages
 ```
 
@@ -82,7 +81,7 @@ Then, reference it from the `kctrl` command when installing or upgrading the pac
 ```shell
 kctrl package install -i kpack \
     -p kpack.packages.kadras.io \
-    -v 0.7.1 \
+    -v 0.7.2 \
     -n carvel-packages \
     --values-file values.yml
 ```
