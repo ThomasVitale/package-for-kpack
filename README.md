@@ -2,57 +2,52 @@
 
 This project provides a [Carvel package](https://carvel.dev/kapp-controller/docs/latest/packaging) for [kpack](https://github.com/pivotal/kpack), a Kubernetes-native implementation of Cloud Native Buildpacks to build OCI images from within the cluster.
 
-## Components
-
-* kpack
-
 ## Prerequisites
 
-* Install the [`kctrl`](https://carvel.dev/kapp-controller/docs/latest/install/#installing-kapp-controller-cli-kctrl) CLI to manage Carvel packages in a convenient way.
-* Ensure [kapp-controller](https://carvel.dev/kapp-controller) is deployed in your Kubernetes cluster. You can do that with Carvel [`kapp`](https://carvel.dev/kapp/docs/latest/install) (recommended choice) or `kubectl`.
+* Kubernetes 1.24+
+* Carvel [`kctrl`](https://carvel.dev/kapp-controller/docs/latest/install/#installing-kapp-controller-cli-kctrl) CLI.
+* Carvel [kapp-controller](https://carvel.dev/kapp-controller) deployed in your Kubernetes cluster. You can install it with Carvel [`kapp`](https://carvel.dev/kapp/docs/latest/install) (recommended choice) or `kubectl`.
 
-```shell
-kapp deploy -a kapp-controller -y \
-  -f https://github.com/vmware-tanzu/carvel-kapp-controller/releases/latest/download/release.yml
-```
+  ```shell
+  kapp deploy -a kapp-controller -y \
+    -f https://github.com/vmware-tanzu/carvel-kapp-controller/releases/latest/download/release.yml
+  ```
 
 ## Installation
 
-You can install the kpack package directly or rely on the [Kadras package repository](https://github.com/arktonix/carvel-packages)
-(recommended choice).
+First, add the [Kadras package repository](https://github.com/arktonix/kadras-packages) to your Kubernetes cluster.
 
-Follow the [instructions](https://github.com/arktonix/carvel-packages) to add the Kadras package repository to your Kubernetes cluster.
+  ```shell
+  kubectl create namespace kadras-packages
+  kctrl package repository add -r kadras-repo \
+    --url ghcr.io/arktonix/kadras-packages \
+    -n kadras-packages
+  ```
 
-If you don't want to use the Kadras package repository, you can create the necessary `PackageMetadata` and
-`Package` resources for the kpack package directly.
+Then, install the Kpack package.
 
-```shell
-kubectl create namespace carvel-packages
-kapp deploy -a kpack-package -n carvel-packages -y \
-    -f https://github.com/arktonix/package-for-kpack/releases/latest/download/metadata.yml \
-    -f https://github.com/arktonix/package-for-kpack/releases/latest/download/package.yml
-```
+    ```shell
+    kctrl package install -i kpack \
+      -p kpack.packages.kadras.io \
+      -v 0.8.1+kadras.1 \
+      -n kadras-packages
+    ```
 
-Either way, you can then install the kpack package using [`kctrl`](https://carvel.dev/kapp-controller/docs/latest/install/#installing-kapp-controller-cli-kctrl).
+### Verification
 
-```shell
-kctrl package install -i kpack \
-    -p kpack.packages.kadras.io \
-    -v 0.8.1 \
-    -n carvel-packages
-```
+You can verify the list of installed Carvel packages and their status.
 
-You can retrieve the list of available versions with the following command.
+  ```shell
+  kctrl package installed list -n kadras-packages
+  ```
 
-```shell
-kctrl package available list -p kpack.packages.kadras.io
-```
+### Version
 
-You can check the list of installed packages and their status as follows.
+You can get the list of Kpack versions available in the Kadras package repository.
 
-```shell
-kctrl package installed list -n carvel-packages
-```
+  ```shell
+  kctrl package available list -p kpack.packages.kadras.io -n kadras-packages
+  ```
 
 ## Configuration
 
@@ -70,25 +65,54 @@ The kpack package has the following configurable properties.
 
 You can define your configuration in a `values.yml` file.
 
-```yaml
-kp_default_repository: test-registry.oci.svc.cluster.local:443/kpack
-kp_default_repository_username: testuser
-kp_default_repository_password: testpassword
-```
+  ```yaml
+  kp_default_repository: test-registry.oci.svc.cluster.local:443/kpack
+  kp_default_repository_username: testuser
+  kp_default_repository_password: testpassword
+  ```
 
 Then, reference it from the `kctrl` command when installing or upgrading the package.
 
-```shell
-kctrl package install -i kpack \
+  ```shell
+  kctrl package install -i kpack \
     -p kpack.packages.kadras.io \
-    -v 0.8.1 \
-    -n carvel-packages \
+    -v 0.8.1+kadras.1 \
+    -n kadras-packages \
     --values-file values.yml
-```
+  ```
 
-## Documentation
+## Upgrading
 
-For documentation specific to kpack, check out [github.com/pivotal/kpack](https://github.com/pivotal/kpack).
+You can upgrade an existing package to a newer version using `kctrl`.
+
+  ```shell
+  kctrl package installed update -i kpack \
+    -v <new-version> \
+    -n kadras-packages
+  ```
+
+You can also update an existing package with a newer `values.yml` file.
+
+  ```shell
+  kctrl package installed update -i kpack \
+    -n kadras-packages \
+    --values-file values.yml
+  ```
+
+## Other
+
+The recommended way of installing the Kpack package is via the [Kadras package repository](https://github.com/arktonix/kadras-packages). If you prefer not using the repository, you can install the package by creating the necessary Carvel `PackageMetadata` and `Package` resources directly using [`kapp`](https://carvel.dev/kapp/docs/latest/install) or `kubectl`.
+
+  ```shell
+  kubectl create namespace kadras-packages
+  kapp deploy -a kpack-package -n kadras-packages -y \
+    -f https://github.com/arktonix/package-for-kpack/releases/latest/download/metadata.yml \
+    -f https://github.com/arktonix/package-for-kpack/releases/latest/download/package.yml
+  ```
+
+## Support and Documentation
+
+For support and documentation specific to Kpack, check out [github.com/pivotal/kpack](https://github.com/pivotal/kpack).
 
 ## References
 
