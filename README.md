@@ -1,5 +1,7 @@
 # Kpack
 
+<a href="https://slsa.dev/spec/v0.1/levels"><img src="https://slsa.dev/images/gh-badge-level3.svg" alt="The SLSA Level 3 badge"></a>
+
 This project provides a [Carvel package](https://carvel.dev/kapp-controller/docs/latest/packaging) for [kpack](https://github.com/pivotal/kpack), a Kubernetes-native implementation of Cloud Native Buildpacks to build OCI images from within the cluster.
 
 ## Prerequisites
@@ -29,7 +31,7 @@ Then, install the Kpack package.
     ```shell
     kctrl package install -i kpack \
       -p kpack.packages.kadras.io \
-      -v 0.8.1+kadras.1 \
+      -v 0.9.1 \
       -n kadras-packages
     ```
 
@@ -76,7 +78,7 @@ Then, reference it from the `kctrl` command when installing or upgrading the pac
   ```shell
   kctrl package install -i kpack \
     -p kpack.packages.kadras.io \
-    -v 0.8.1+kadras.1 \
+    -v 0.9.1 \
     -n kadras-packages \
     --values-file values.yml
   ```
@@ -120,6 +122,6 @@ This package is based on the original kpack package used in [Tanzu Community Edi
 
 ## Supply Chain Security
 
-This project is compliant with level 2 of the [SLSA Framework](https://slsa.dev).
+This project is compliant with level 3 of the [SLSA Framework](https://slsa.dev).
 
-<img src="https://slsa.dev/images/SLSA-Badge-full-level2.svg" alt="The SLSA Level 2 badge" width=200>
+<img src="https://slsa.dev/images/SLSA-Badge-full-level3.svg" alt="The SLSA Level 3 badge" width=200>
