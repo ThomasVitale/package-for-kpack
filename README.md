@@ -31,7 +31,7 @@ Then, install the Kpack package.
     ```shell
     kctrl package install -i kpack \
       -p kpack.packages.kadras.io \
-      -v 0.9.1 \
+      -v 0.9.1+kadras.1 \
       -n kadras-packages
     ```
 
@@ -78,7 +78,7 @@ Then, reference it from the `kctrl` command when installing or upgrading the pac
   ```shell
   kctrl package install -i kpack \
     -p kpack.packages.kadras.io \
-    -v 0.9.1 \
+    -v 0.9.1+kadras.1 \
     -n kadras-packages \
     --values-file values.yml
   ```
