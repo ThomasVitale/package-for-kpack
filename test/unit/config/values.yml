@@ -1,0 +1,6 @@
+---
+kp_default_repository:
+  name: ghcr.io/thomasvitale/kpack
+  credentials:
+    username: "jon.snow"
+    password: "youknownothing"

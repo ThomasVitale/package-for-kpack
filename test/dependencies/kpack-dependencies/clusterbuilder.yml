@@ -7,7 +7,7 @@ spec:
   serviceAccountRef:
     name: kadras-install-sa
     namespace: carvel-test
-  tag: test-registry.oci.svc.cluster.local:443/kpack:clusterbuilder-default
+  tag: test-registry.oci.svc.cluster.local:5000/kpack:clusterbuilder-test
   stack:
     name: default
     kind: ClusterStack

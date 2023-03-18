@@ -4,7 +4,7 @@ metadata:
   name: test-image
   namespace: carvel-test
 spec:
-  tag: ghcr.io/kadras-io/kpack-test-image
+  tag: ghcr.io/thomasvitale/kpack-test-image
   serviceAccountName: kadras-install-sa
   builder:
     name: default

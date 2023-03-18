@@ -1,0 +1,120 @@
+#@ load("@ytt:data", "data")
+#@ load("@ytt:overlay", "overlay")
+#@ load("/config.star", "get_default_registry_docker_config_json", "get_default_registry_secret_name")
+
+#@ if data.values.kp_default_repository.aws_iam_role_arn == "":
+
+#! #################################
+#! REGISTRY CREDENTIALS FROM SECRET
+#! #################################
+
+#@ if data.values.kp_default_repository.secret.name != "":
+
+---
+apiVersion: secretgen.carvel.dev/v1alpha1
+kind: SecretExport
+metadata:
+  name: #@ data.values.kp_default_repository.secret.name
+  namespace: #@ data.values.kp_default_repository.secret.namespace
+spec:
+  toNamespaces:
+    - kpack
+---
+apiVersion: secretgen.carvel.dev/v1alpha1
+kind: SecretImport
+metadata:
+  name: #@ data.values.kp_default_repository.secret.name
+  namespace: kpack
+spec:
+  fromNamespace: #@ data.values.kp_default_repository.secret.namespace
+
+#! #################################
+#! REGISTRY CREDENTIALS FROM VALUES
+#! #################################
+
+#@ else:
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: kp-default-repository-secret
+  namespace: kpack
+  annotations:
+    kapp.k14s.io/versioned: ""
+type: kubernetes.io/dockerconfigjson
+data:
+  .dockerconfigjson: #@ get_default_registry_docker_config_json()
+
+#@ end
+
+#! #################################
+#! CREDENTIALS CONFIG IN CONTROLLER
+#! #################################
+
+#@overlay/match by=overlay.subset({"kind":"Deployment", "metadata":{"name":"kpack-controller"}})
+---
+spec:
+  template:
+    spec:
+      containers:
+        #@overlay/match by="name"
+        #@overlay/match-child-defaults missing_ok=True
+        - name: controller
+          env:
+            #@overlay/append
+            - name: CREDENTIAL_PROVIDER_SECRET_PATH
+              value: /var/kpack/credentials
+          volumeMounts:
+            #@overlay/append
+            - name: credentials
+              mountPath: /var/kpack/credentials
+              readOnly: true
+      #@overlay/match missing_ok=True
+      volumes:
+        #@overlay/append
+        - name: credentials
+          secret:
+            secretName: #@ get_default_registry_secret_name()
+
+#! ##################################
+#! REGISTRY CREDENTIALS FROM AWS IAM
+#! ##################################
+
+#@ else:
+
+#@overlay/match by=overlay.subset({"kind":"ServiceAccount", "metadata":{"name":"controller", "namespace":"kpack"}})
+---
+metadata:
+  #@overlay/match missing_ok=True
+  annotations:
+    eks.amazonaws.com/role-arn: #@ data.values.kp_default_repository.aws_iam_role_arn
+
+#@ end
+
+#! ##############
+#! COMMON CONFIG
+#! ##############
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: kp-default-repository-serviceaccount
+  namespace: kpack
+#@ if data.values.kp_default_repository.aws_iam_role_arn == "":
+imagePullSecrets:
+  - name: #@ get_default_registry_secret_name()
+secrets:
+  - name: #@ get_default_registry_secret_name()
+#@ end
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kp-config
+  namespace: kpack
+data:
+  default.repository: #@ data.values.kp_default_repository.name
+  default.repository.serviceaccount: kp-default-repository-serviceaccount

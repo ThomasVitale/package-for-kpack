@@ -1,28 +1,9 @@
 #@ load("@ytt:data", "data")
 #@ load("@ytt:overlay", "overlay")
-#@ load("@ytt:assert", "assert")
-
-#@ def split_certs():
-#@   ca_certs_lines=data.values.ca_cert_data.splitlines()
-#@   ca_certs = []
-#@   i1=0
-#@   i2=0
-#@   found_cert = True
-#@   for ca_cert_line in ca_certs_lines:
-#@     found_cert = False
-#@     if ca_cert_line == "-----END CERTIFICATE-----" :
-#@       ca_certs.append("\n".join(ca_certs_lines[i1:i2+1]))
-#@       i1=i2+1
-#@       found_cert = True
-#@     end
-#@     i2+=1
-#@   end
-#@   found_cert or assert.fail("misconfigured ca_cert_data")
-#@   return ca_certs
-#@ end
+#@ load("/config.star", "get_ca_certificates")
 
 #@ if data.values.ca_cert_data != "":
-#@ ca_certs=split_certs()
+
 #@yaml/text-templated-strings
 ---
 apiVersion: v1
@@ -36,25 +17,24 @@ type: servicebinding.io/ca-certificates
 stringData:
   type: ca-certificates
   #@ i = 0
-  #@ for ca_cert in ca_certs:
+  #@ for ca_cert in get_ca_certificates():
   certificate_(@= str(i) @): #@ ca_cert
   #@ i += 1
   #@ end
 
-#@overlay/match by=overlay.subset({"metadata":{"name":"kpack-controller"}, "kind": "Deployment"})
+#@overlay/match by=overlay.subset({"kind":"Deployment", "metadata":{"name":"kpack-controller"}})
 ---
 spec:
   template:
     spec:
       containers:
         #@overlay/match by="name"
+        #@overlay/match-child-defaults missing_ok=True
         - name: controller
-          #@overlay/match missing_ok=True
           env:
             #@overlay/append
             - name: SERVICE_BINDING_ROOT
               value: "/bindings"
-          #@overlay/match missing_ok=True
           volumeMounts:
             #@overlay/append
             - mountPath: /bindings/ca-certificates
@@ -65,4 +45,5 @@ spec:
         - name: ca-certificates
           secret:
             secretName: ca-certificates-binding
+
 #@ end
