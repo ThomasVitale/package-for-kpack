@@ -114,6 +114,9 @@ Settings for the default container repository used by kpack.
 | `kp_default_repository.aws_iam_role_arn` | `""` | IAM credentials to access the default container repository if the registry is on AWS. |
 
 Setting for the kpack controller.
+
+| Config | Default | Description |
+|-------|-------------------|-------------|
 | `controller.resources.requests.memory` | `"1Gi"` | Memory requests configuration for the kpack-controller Deployment. In a resource-constrained environment, you can lower this up to `100Mi`. |
 | `controller.resources.limits.memory` | `"1Gi"` | Memory limits configuration for the kpack-controller Deployment. In a resource-constrained environment, you can lower this up to `500Mi`. |
 | `config.injected_sidecar_support` | `false` | Enable support for injected sidecars. |
