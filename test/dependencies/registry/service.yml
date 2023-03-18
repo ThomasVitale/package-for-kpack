@@ -7,7 +7,7 @@ spec:
   selector:
     name: test-registry
   ports:
-    - name: https
+    - name: registry-tcp
       protocol: TCP
-      port: 443
-      targetPort: 443
+      port: 5000
+      targetPort: 5000

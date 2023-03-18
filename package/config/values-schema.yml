@@ -2,27 +2,46 @@
 #@overlay/match-child-defaults missing_ok=True
 ---
 
-#@schema/desc "The default repository to use for builder images and dependencies"
-#@schema/examples ("Repository on GitHub Container Registry", "ghcr.io/thomasvitale/kpack")
-kp_default_repository: ""
+#@schema/desc "PEM-encoded certificate data that kpack controller will use to trust TLS connections based on a custom CA with a container registry. Note: This will not be injected into builds, you need to use the cert injection webhook with the `kpack.io/build` label value."
+ca_cert_data: ""
 
-#@schema/desc "Configuration for the Secret holding the credentials to access kp_default_repository"
-kp_default_repository_secret:
-  #@schema/desc "The name of the Secret holding the credentials to access kp_default_repository"
+#@schema/desc "Settings for the default container repository used by kpack."
+kp_default_repository:
+  #@schema/desc "The default repository to use for builder images and dependencies."
+  #@schema/examples ("Repository on GitHub Container Registry", "ghcr.io/thomasvitale/kpack")
   name: ""
-  #@schema/desc "The namespace of the Secret holding the credentials to access kp_default_repository"
-  namespace: ""
+  #@schema/desc "Read/write credentials to access the default container repository."
+  credentials:
+    #@schema/desc "Username to access the default container repository. Note: Use `_json_key` for GCR."
+    username: ""
+    #@schema/desc "Token to access the default container repository. Note: Use contents of service account key json for GCR."
+    password: ""
+  #@schema/desc "Configuration for the Secret holding the credentials to access the default container repository."
+  secret:
+    #@schema/desc "The name of the Secret holding the credentials to access the default container repository."
+    name: ""
+    #@schema/desc "The namespace of the Secret holding the credentials to access the default container repository."
+    namespace: ""
+  #@schema/desc "IAM credentials to access the default container repository if the registry is on AWS."
+  aws_iam_role_arn: ""
 
-#@schema/desc "Username to access kp_default_repository. Note: Use _json_key for GCR"
-kp_default_repository_username: ""
+#@schema/desc "Settings for the the kpack controller."
+controller:
+  #@schema/desc "Resource configuration for the kpack-controller Deployment."
+  resources:
+    requests:
+      #@schema/desc "Memory requests configuration for the kpack-controller Deployment. In a resource-constrained environment, you can lower this up to `100Mi`."
+      memory: "1Gi"
+    limits:
+      #@schema/desc "Memory limits configuration for the kpack-controller Deployment. In a resource-constrained environment, you can lower this up to `500Mi`."
+      memory: "1Gi"
 
-#@schema/desc "Token to access kp_default_repository. Note: Use contents of service account key json for GCR"
-kp_default_repository_password: ""
+#@schema/desc "Settings for kpack."
+config:
+  #@schema/desc "Enable support for injected sidecars."
+  injected_sidecar_support: false
 
-#@schema/desc "IAM credentials to access kp_default_repository if the registry is on AWS"
-kp_default_repository_aws_iam_role_arn: ""
-
-#@schema/desc "Configure proxy support"
+#@schema/desc "Settings for the corporate proxy."
 proxy:
   #@schema/desc "The HTTPS proxy to use for network traffic"
   https_proxy: ""
@@ -30,6 +49,3 @@ proxy:
   http_proxy: ""
   #@schema/desc "A comma-separated list of hostnames, IP addresses, or IP ranges in CIDR format that should not use a proxy"
   no_proxy: ""
-
-#@schema/desc "CA Certificate to be injected into the kpack controller trust store for communicating with self signed registries. Note: This will not be injected into builds, you need to use the cert injection webhook with the kpack.io/build label value"
-ca_cert_data: ""

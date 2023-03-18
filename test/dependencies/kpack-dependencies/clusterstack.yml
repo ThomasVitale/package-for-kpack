@@ -1,0 +1,11 @@
+---
+apiVersion: kpack.io/v1alpha2
+kind: ClusterStack
+metadata:
+  name: default
+spec:
+  id: "io.paketo.stacks.tiny"
+  buildImage:
+    image: ghcr.io/thomasvitale/jammy-build:tiny
+  runImage:
+    image: ghcr.io/thomasvitale/jammy-run:tiny

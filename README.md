@@ -1,10 +1,16 @@
 # Kpack
 
-<a href="https://slsa.dev/spec/v0.1/levels"><img src="https://slsa.dev/images/gh-badge-level3.svg" alt="The SLSA Level 3 badge"></a>
+![Test Workflow](https://github.com/kadras-io/package-for-kpack/actions/workflows/test.yml/badge.svg)
+![Release Workflow](https://github.com/kadras-io/package-for-kpack/actions/workflows/release.yml/badge.svg)
+[![The SLSA Level 3 badge](https://slsa.dev/images/gh-badge-level3.svg)](https://slsa.dev/spec/v0.1/levels)
+[![The Apache 2.0 license badge](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![Follow us on Twitter](https://img.shields.io/static/v1?label=Twitter&message=Follow&color=1DA1F2)](https://twitter.com/kadrasIO)
 
-This project provides a [Carvel package](https://carvel.dev/kapp-controller/docs/latest/packaging) for [kpack](https://github.com/pivotal/kpack), a Kubernetes-native implementation of Cloud Native Buildpacks to build OCI images from within the cluster.
+A Carvel package for [kpack](https://github.com/pivotal/kpack), a Kubernetes-native implementation of Cloud Native Buildpacks to build OCI images from within the cluster.
 
-## Prerequisites
+## 🚀&nbsp; Getting Started
+
+### Prerequisites
 
 * Kubernetes 1.24+
 * Carvel [`kctrl`](https://carvel.dev/kapp-controller/docs/latest/install/#installing-kapp-controller-cli-kctrl) CLI.
@@ -12,116 +18,124 @@ This project provides a [Carvel package](https://carvel.dev/kapp-controller/docs
 
   ```shell
   kapp deploy -a kapp-controller -y \
-    -f https://github.com/vmware-tanzu/carvel-kapp-controller/releases/latest/download/release.yml
+    -f https://github.com/carvel-dev/kapp-controller/releases/latest/download/release.yml
   ```
 
-## Installation
+### Installation
 
-First, add the [Kadras package repository](https://github.com/kadras-io/kadras-packages) to your Kubernetes cluster.
+Add the Kadras [package repository](https://github.com/kadras-io/kadras-packages) to your Kubernetes cluster:
 
   ```shell
   kubectl create namespace kadras-packages
-  kctrl package repository add -r kadras-repo \
+  kctrl package repository add -r kadras-packages \
     --url ghcr.io/kadras-io/kadras-packages \
     -n kadras-packages
   ```
 
-Then, install the Kpack package.
+<details><summary>Installation without package repository</summary>
+The recommended way of installing the kpack package is via the Kadras <a href="https://github.com/kadras-io/kadras-packages">package repository</a>. If you prefer not using the repository, you can add the package definition directly using <a href="https://carvel.dev/kapp/docs/latest/install"><code>kapp</code></a> or <code>kubectl</code>.
 
-    ```shell
-    kctrl package install -i kpack \
-      -p kpack.packages.kadras.io \
-      -v 0.9.1+kadras.1 \
-      -n kadras-packages
-    ```
+  ```shell
+  kubectl create namespace kpack
+  kapp deploy -a kpack-package -n kadras-packages -y \
+    -f https://github.com/kadras-io/package-for-kpack/releases/latest/download/metadata.yml \
+    -f https://github.com/kadras-io/package-for-kpack/releases/latest/download/package.yml
+  ```
+</details>
 
-### Verification
+Install the kpack package:
 
-You can verify the list of installed Carvel packages and their status.
+  ```shell
+  kctrl package install -i kpack \
+    -p kpack.packages.kadras.io \
+    -v ${VERSION} \
+    -n kadras-packages
+  ```
+
+> **Note**
+> You can find the `${VERSION}` value by retrieving the list of package versions available in the Kadras package repository installed on your cluster.
+> 
+>   ```shell
+>   kctrl package available list -p kpack.packages.kadras.io -n kadras-packages
+>   ```
+
+Verify the installed packages and their status:
 
   ```shell
   kctrl package installed list -n kadras-packages
   ```
 
-### Version
+## 📙&nbsp; Documentation
 
-You can get the list of Kpack versions available in the Kadras package repository.
+Documentation, tutorials and examples for this package are available in the [docs](docs) folder.
+For documentation specific to kpack, check out [github.com/pivotal/kpack](https://github.com/pivotal/kpack).
 
-  ```shell
-  kctrl package available list -p kpack.packages.kadras.io -n kadras-packages
-  ```
+## 🎯&nbsp; Configuration
 
-## Configuration
-
-The kpack package has the following configurable properties.
-
-| Config | Required/Optional | Description |
-|--------|---------|-------------|
-| `kp_default_repository` | Optional | OCI repository used for builder images and dependencies. Ex: Dockerhub: `mydockerhubusername/my-repo`; GCR: `gcr.io/my-project/my-repo`; Harbor: `myharbor.io/my-project/my-repo`. Required by the [kp cli](https://github.com/vmware-tanzu/kpack-cli).|
-| `kp_default_repository_username` | Optional | Username for `kp_default_repository` (Note: use `_json_key` for GCR) |
-| `kp_default_repository_password` | Optional | Password for `kp_default_repository` (Note: use contents of service account key json for GCR) |
-| `proxy.http_proxy` | Optional | The HTTP proxy to use for network traffic |
-| `proxy.https_proxy` | Optional | The HTTPS proxy to use for network traffic |
-| `proxy.no_proxy` | Optional | A comma-separated list of hostnames, IP addresses, or IP ranges in CIDR format that should not use a proxy |
-| `ca_cert_data` | Optional | CA Certificate to be injected into the kpack controller trust store for communicating with self signed registries. (Note: This will not be injected into builds, you need to use the cert injection webhook with the `kpack.io/build` label value) |
-
-You can define your configuration in a `values.yml` file.
+The kpack package can be customized via a `values.yml` file.
 
   ```yaml
-  kp_default_repository: test-registry.oci.svc.cluster.local:443/kpack
-  kp_default_repository_username: testuser
-  kp_default_repository_password: testpassword
+  kp_default_repository:
+    name: ghcr.io/thomasvitale/kpack
+    credentials:
+      username: "jon.snow"
+      password: "youknownothing"
   ```
 
-Then, reference it from the `kctrl` command when installing or upgrading the package.
+Reference the `values.yml` file from the `kctrl` command when installing or upgrading the package.
 
   ```shell
   kctrl package install -i kpack \
     -p kpack.packages.kadras.io \
-    -v 0.9.1+kadras.1 \
+    -v ${VERSION} \
     -n kadras-packages \
     --values-file values.yml
   ```
 
-## Upgrading
+### Values
 
-You can upgrade an existing package to a newer version using `kctrl`.
+The kpack package has the following configurable properties.
 
-  ```shell
-  kctrl package installed update -i kpack \
-    -v <new-version> \
-    -n kadras-packages
-  ```
+<details><summary>Configurable properties</summary>
 
-You can also update an existing package with a newer `values.yml` file.
+| Config | Default | Description |
+|-------|-------------------|-------------|
+| `ca_cert_data` | `""` | PEM-encoded certificate data that kpack controller will use to trust TLS connections based on a custom CA with a container registry. Note: This will not be injected into builds, you need to use the cert injection webhook with the `kpack.io/build` label value. |
 
-  ```shell
-  kctrl package installed update -i kpack \
-    -n kadras-packages \
-    --values-file values.yml
-  ```
+Settings for the default container repository used by kpack.
 
-## Other
+| Config | Default | Description |
+|-------|-------------------|-------------|
+| `kp_default_repository.name` | `""` | The default repository to use for builder images and dependencies. For example, GitHub Container Registry: `ghcr.io/my-org/my-repo`; GCR: `gcr.io/my-project/my-repo`; Harbor: `myharbor.io/my-project/my-repo`, Dockerhub: `docker.io/my-username/my-repo`.|
+| `kp_default_repository.credentials.username` | `""` | Username to access the default container repository. Note: Use `_json_key` for GCR. |
+| `kp_default_repository.credentials.password` | `""` | Token to access the default container repository. Note: Use contents of service account key json for GCR. |
+| `kp_default_repository.secret.name` | `""` | The name of the Secret holding the credentials to access the default container repository. |
+| `kp_default_repository.secret.namespace` | `""` | he namespace of the Secret holding the credentials to access the default container repository. |
+| `kp_default_repository.aws_iam_role_arn` | `""` | IAM credentials to access the default container repository if the registry is on AWS. |
 
-The recommended way of installing the Kpack package is via the [Kadras package repository](https://github.com/kadras-io/kadras-packages). If you prefer not using the repository, you can install the package by creating the necessary Carvel `PackageMetadata` and `Package` resources directly using [`kapp`](https://carvel.dev/kapp/docs/latest/install) or `kubectl`.
+Setting for the kpack controller.
+| `controller.resources.requests.memory` | `"1Gi"` | Memory requests configuration for the kpack-controller Deployment. In a resource-constrained environment, you can lower this up to `100Mi`. |
+| `controller.resources.limits.memory` | `"1Gi"` | Memory limits configuration for the kpack-controller Deployment. In a resource-constrained environment, you can lower this up to `500Mi`. |
+| `config.injected_sidecar_support` | `false` | Enable support for injected sidecars. |
 
-  ```shell
-  kubectl create namespace kadras-packages
-  kapp deploy -a kpack-package -n kadras-packages -y \
-    -f https://github.com/kadras-io/package-for-kpack/releases/latest/download/metadata.yml \
-    -f https://github.com/kadras-io/package-for-kpack/releases/latest/download/package.yml
-  ```
+Settings for the corporate proxy.
 
-## Support and Documentation
+| Config | Default | Description |
+|-------|-------------------|-------------|
+| `proxy.http_proxy` | `""` | The HTTP proxy to use for network traffic. |
+| `proxy.https_proxy` | `""` | The HTTPS proxy to use for network traffic. |
+| `proxy.no_proxy` | `""` | A comma-separated list of hostnames, IP addresses, or IP ranges in CIDR format that should not use a proxy. |
 
-For support and documentation specific to Kpack, check out [github.com/pivotal/kpack](https://github.com/pivotal/kpack).
+</details>
 
-## References
+## 🛡️&nbsp; Security
 
-This package is based on the original kpack package used in [Tanzu Community Edition](https://github.com/vmware-tanzu/community-edition) before its retirement.
+The security process for reporting vulnerabilities is described in [SECURITY.md](SECURITY.md).
 
-## Supply Chain Security
+## 🖊️&nbsp; License
 
-This project is compliant with level 3 of the [SLSA Framework](https://slsa.dev).
+This project is licensed under the **Apache License 2.0**. See [LICENSE](LICENSE) for more information.
 
-<img src="https://slsa.dev/images/SLSA-Badge-full-level3.svg" alt="The SLSA Level 3 badge" width=200>
+## 🙏&nbsp; Acknowledgments
+
+This package is inspired by the original kpack package used in the [Tanzu Community Edition](https://github.com/vmware-tanzu/community-edition) project before its retirement.

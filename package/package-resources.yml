@@ -4,11 +4,11 @@ metadata:
   creationTimestamp: null
   name: kpack.packages.kadras.io.0.0.0
 spec:
-  capacityRequirementsDescription: Registry with > 1GB available space
+  capacityRequirementsDescription: Container registry with > 1GB available space
   licenses:
   - Apache 2.0
   refName: kpack.packages.kadras.io
-  releaseNotes: https://github.com/pivotal/kpack/releases
+  releaseNotes: https://github.com/kadras-io/package-for-kpack/releases
   releasedAt: null
   template:
     spec:
@@ -22,71 +22,7 @@ spec:
           - config
       - kbld: {}
   valuesSchema:
-    openAPIv3:
-      additionalProperties: false
-      properties:
-        ca_cert_data:
-          default: ""
-          description: 'CA Certificate to be injected into the kpack controller trust
-            store for communicating with self signed registries. Note: This will not
-            be injected into builds, you need to use the cert injection webhook with
-            the kpack.io/build label value'
-          type: string
-        kp_default_repository:
-          default: ""
-          description: The default repository to use for builder images and dependencies
-          example: ghcr.io/thomasvitale/kpack
-          type: string
-          x-example-description: Repository on GitHub Container Registry
-        kp_default_repository_aws_iam_role_arn:
-          default: ""
-          description: IAM credentials to access kp_default_repository if the registry
-            is on AWS
-          type: string
-        kp_default_repository_password:
-          default: ""
-          description: 'Token to access kp_default_repository. Note: Use contents
-            of service account key json for GCR'
-          type: string
-        kp_default_repository_secret:
-          additionalProperties: false
-          description: Configuration for the Secret holding the credentials to access
-            kp_default_repository
-          properties:
-            name:
-              default: ""
-              description: The name of the Secret holding the credentials to access
-                kp_default_repository
-              type: string
-            namespace:
-              default: ""
-              description: The namespace of the Secret holding the credentials to
-                access kp_default_repository
-              type: string
-          type: object
-        kp_default_repository_username:
-          default: ""
-          description: 'Username to access kp_default_repository. Note: Use _json_key
-            for GCR'
-          type: string
-        proxy:
-          additionalProperties: false
-          description: Configure proxy support
-          properties:
-            http_proxy:
-              default: ""
-              description: The HTTP proxy to use for network traffic
-              type: string
-            https_proxy:
-              default: ""
-              description: The HTTPS proxy to use for network traffic
-              type: string
-            no_proxy:
-              default: ""
-              description: A comma-separated list of hostnames, IP addresses, or IP
-                ranges in CIDR format that should not use a proxy
-              type: string
-          type: object
+    openAPIv3: {}
   version: 0.0.0
 
 ---
@@ -99,14 +35,14 @@ spec:
   categories:
   - build
   displayName: kpack
-  longDescription: kpack extends Kubernetes and utilizes unprivileged Kubernetes primitives
-    to provide builds of OCI images as a platform implementation of Cloud Native Buildpacks
-    (CNB)
+  longDescription: kpack extends Kubernetes and utilizes unprivileged kubernetes primitives to provide builds of OCI images as a platform implementation of Cloud Native Buildpacks (CNB).
   maintainers:
   - name: Thomas Vitale
   providerName: Kadras
   shortDescription: kpack builds application source code into OCI compliant images
-    using Cloud Native Buildpacks
+    using Cloud Native Buildpacks.
+  supportDescription: Go to https://kadras.io for documentation and https://github.com/kadras-io/package-for-kpack
+    for community support.
 
 ---
 apiVersion: packaging.carvel.dev/v1alpha1

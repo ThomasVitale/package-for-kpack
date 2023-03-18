@@ -1,0 +1,42 @@
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: kpack-values
+  namespace: tests
+stringData:
+  values.yaml: |
+    kp_default_repository:
+      name: test-registry.oci.svc.cluster.local:5000/kpack
+      credentials:
+        username: testuser
+        password: testpassword
+    ca_cert_data: |-
+      -----BEGIN CERTIFICATE-----
+      MIIE2DCCAsACCQDu/D1JTF3I9jANBgkqhkiG9w0BAQsFADAuMSwwKgYDVQQDDCN0
+      ZXN0LXJlZ2lzdHJ5Lm9jaS5zdmMuY2x1c3Rlci5sb2NhbDAeFw0yMjEwMDkxNDE2
+      NDFaFw0yMzEwMDkxNDE2NDFaMC4xLDAqBgNVBAMMI3Rlc3QtcmVnaXN0cnkub2Np
+      LnN2Yy5jbHVzdGVyLmxvY2FsMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKC
+      AgEAzASou4G1GHzsYTJE0L7NgexHSO9RenEcwwq8xkTimx+slWwinUX/fFTk8vob
+      0iabMZtCMvSktwC+ZkByn3e54h3JJVTCQ6X8EQzaOAFzFJhDaLPe9VnoeoOUZ7Pc
+      pUIeDQZSCR8VVaKfkhO3y74c+ejwIWWzoBKtZchJBNQ19drv+bBguIlCi6765re0
+      s2ofE+oaGFhPAqYE2EMaiM0DT06AZmfx0DOWyjeOhMXdWtiHZ7GjNPn1hEvcilVD
+      kDdhoZTgjDnZ76xx0OPDDGw5uiZG7tZM9XSvyTwBNlK1Ibxpva/+kmQFRosJBbby
+      G+P0AaLQjlY07XY+0uCABNM0/JFjsXqgaUf/ihoYTG0dO3g3YEnEE57e2P7LyoK8
+      /zbJV2Ad8S/Xcyv45SLhlBgBwE5t4/qcoeQpkFGTfLvXLrOojm7H74LYCVyMMxzc
+      ik0wuzJdDT1RftZk97L6Xlq41lbZAa4TphKsoxpviYKygvPJUJ+R9fhZsCNOTyDh
+      pS1RGDhaRPZzGQBvPF6pl+Bf6YBqz6TZq4uRe00IQt94cwBbLH7baa9E3NHEEEom
+      KZe1498yzVQKNEhQGhpD6b2McVUOovlZOVQ/q4dbmrCMfoJAzb6l1AWpGGAbWbCi
+      Ffpt27DHqjun9sFeKSvt9J2hOO2MGWeiOuRELKHD/9hfm/0CAwEAATANBgkqhkiG
+      9w0BAQsFAAOCAgEAPQVHcK7msOquqh0OxuhodyCysB+ohv9NqG35MS3jUOHLqbbY
+      XB1tICjXpZ12o2qJ7JNNaZSljNA5cx+F4x2h/bPUmJv3xGBA7ccvTQxj8IVwq2FO
+      9iDfsezasMHOQaCUxQHYeaiG+AeUYbj2etGqKvYinAo+am6KXSIPSc6XvQrT/Vhg
+      o85GMs4NTksLC8fZ1msCewa516H8LRNFUYB9Pfz15fS1gJfBe7uBQgT/pWgtCHZw
+      VdO9XY1AaMCeZRQF7lHZb+JF/65APws9IYkHLGPM8vULnT8+2IUCDo+t8WGAU4+z
+      tyKZbHldsGq+9oeoMDtfZDGw7x8DixJH+tkKf6riYyrvA/B0q8QH9zhb/Wn3jtg5
+      YqzjDRZybFbID4di617j/d2Gz8qj93rIu5l9DYTZaIQdjqs7bjEC0Kl3C6GVFPqx
+      6QR07JIz31eb6+DIvJ0N4r7a7RPu3JNkx68Ki4isK0d8jU48Z4Bt7W12Qr6zMyxN
+      bHnNBm3G1F45qEmWzrkARoGGdZ9vy3p6luYmc+zJs6lZarr5qhUaZgsITsXXusEy
+      Qcm6mbyXrMMJekB8TKODRyUzUapkRY69I3VgoX8lFGJMR1N0t4S1f06kXjTJO/6s
+      KOJY5bJr6WXQjvxHr6aS5rkUttGx4TMbvaKLHYuzkanEsjt/ToanoQTRsug=
+      -----END CERTIFICATE-----

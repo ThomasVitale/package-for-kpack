@@ -5,4 +5,4 @@ metadata:
   name: default
 spec:
   sources:
-    - image: gcr.io/paketo-buildpacks/java
+    - image: ghcr.io/thomasvitale/builder:tiny

@@ -20,7 +20,7 @@ clean:
 
 # Process the configuration manifests with ytt
 ytt:
-	ytt --file package/config
+	ytt -f package/config --data-values-file test/unit/config/values.yml
 
 # Use ytt to generate an OpenAPI specification
 schema:
@@ -28,9 +28,8 @@ schema:
 
 # Check the ytt-annotated Kubernetes configuration and its validation
 test-config:
-	ytt -f package/config | kubeconform -ignore-missing-schemas -summary
+	ytt -f package/config --data-values-file test/unit/config/values.yml | kubeconform -ignore-missing-schemas -summary
 
-# Run package tests
-test-integration: test/test.sh
-	chmod +x test/test.sh
-	./test/test.sh
+# Run package integration tests
+test-integration: test/integration
+	kubectl kuttl test --config test/integration/kuttl-test.yml --kind-config test/setup/kind/$(K8S_VERSION)/kind-config.yml
