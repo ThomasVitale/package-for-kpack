@@ -25,6 +25,10 @@ end
 
 # Compute the container registry that kpack will use by default.
 def get_default_registry():
+  if data.values.kp_default_repository.name == "":
+    return ""
+  end
+
   kp_default_registry = ""
   parts = data.values.kp_default_repository.name.split("/", 1)
   if len(parts) == 2:
@@ -41,6 +45,10 @@ end
 
 # Compute the .dockerconfigjson content for defining a Secret with the default registry credentials.
 def get_default_registry_docker_config_json():
+  if not data.values.kp_default_repository.credentials:
+    return ""
+  end
+
   registry_auth = base64.encode("{}:{}".format(data.values.kp_default_repository.credentials.username, data.values.kp_default_repository.credentials.password))
   registry_credentials = {
       "username": data.values.kp_default_repository.credentials.username, 
@@ -58,10 +66,10 @@ end
 # Compute the Secret name for the default container registry.
 def get_default_registry_secret_name():
   kp_default_registry_secret_name = ""
-  if data.values.kp_default_repository.aws_iam_role_arn == "":
+  if not data.values.kp_default_repository.aws_iam_role_arn:
     kp_default_registry_secret_name = "kp-default-repository-secret"
   end
-  if data.values.kp_default_repository.secret.name != "":
+  if data.values.kp_default_repository.secret:
     kp_default_registry_secret_name = data.values.kp_default_repository.secret.name
   end
   return kp_default_registry_secret_name

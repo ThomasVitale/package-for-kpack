@@ -2,13 +2,13 @@
 #@ load("@ytt:overlay", "overlay")
 #@ load("/config.star", "get_default_registry_docker_config_json", "get_default_registry_secret_name")
 
-#@ if data.values.kp_default_repository.aws_iam_role_arn == "":
+#@ if not data.values.kp_default_repository.aws_iam_role_arn:
 
 #! #################################
 #! REGISTRY CREDENTIALS FROM SECRET
 #! #################################
 
-#@ if data.values.kp_default_repository.secret.name != "":
+#@ if data.values.kp_default_repository.secret:
 
 ---
 apiVersion: secretgen.carvel.dev/v1alpha1
@@ -102,7 +102,7 @@ kind: ServiceAccount
 metadata:
   name: kp-default-repository-serviceaccount
   namespace: kpack
-#@ if data.values.kp_default_repository.aws_iam_role_arn == "":
+#@ if not data.values.kp_default_repository.aws_iam_role_arn:
 imagePullSecrets:
   - name: #@ get_default_registry_secret_name()
 secrets:

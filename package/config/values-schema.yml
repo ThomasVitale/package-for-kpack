@@ -6,23 +6,28 @@
 ca_cert_data: ""
 
 #@schema/desc "Settings for the default container repository used by kpack."
+#@schema/validation one_not_null=["credentials", "secret", "aws_iam_role_arn"]
 kp_default_repository:
   #@schema/desc "The default repository to use for builder images and dependencies."
   #@schema/examples ("Repository on GitHub Container Registry", "ghcr.io/thomasvitale/kpack")
+  #@schema/validation min_len=1
   name: ""
   #@schema/desc "Read/write credentials to access the default container repository."
+  #@schema/nullable
   credentials:
     #@schema/desc "Username to access the default container repository. Note: Use `_json_key` for GCR."
     username: ""
     #@schema/desc "Token to access the default container repository. Note: Use contents of service account key json for GCR."
     password: ""
   #@schema/desc "Configuration for the Secret holding the credentials to access the default container repository."
+  #@schema/nullable
   secret:
     #@schema/desc "The name of the Secret holding the credentials to access the default container repository."
     name: ""
     #@schema/desc "The namespace of the Secret holding the credentials to access the default container repository."
     namespace: ""
   #@schema/desc "IAM credentials to access the default container repository if the registry is on AWS."
+  #@schema/nullable
   aws_iam_role_arn: ""
 
 #@schema/desc "Settings for the the kpack controller."
