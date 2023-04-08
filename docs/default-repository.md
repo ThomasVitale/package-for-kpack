@@ -4,7 +4,7 @@ When installing kpack, you're required to provide information about the containe
 
 ```yaml
 kp_default_repository:
-  name: "ghcr.io/thomasvitale/kpack"
+  name: "ghcr.io/thomasvitale/buildpacks"
 ```
 
 Credentials to authenticate with the given container registry can be provided in a few different ways. Only one strategy can be configured.
@@ -24,13 +24,23 @@ When using the Google Container Registry, `kp_default_repository.credentials.use
 
 ## Credentials via Secret
 
-You can pass the container registry credentials via a Secret, which needs to be created in the cluster before installing kpack.
+You can pass the container registry credentials via a Secret, which needs to be created in the cluster before installing kpack. 
 
 ```yaml
 kp_default_repository:
   secret:
-    name: "kpack-default-registry-credentials"
-    namespace: "platform-credentials"
+    name: supply-chain-registry-credentials
+    namespace: kadras-packages
+```
+
+If you use this package outside the Kadras Engineering Platform, you also need to configure it to export the Secret from the source namespace to the kpack namespace.
+
+```yaml
+kp_default_repository:
+  secret:
+    name: supply-chain-registry-credentials
+    namespace: kadras-packages
+    create_export: true
 ```
 
 ## Credentials via AWS IAM

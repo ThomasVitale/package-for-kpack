@@ -9,7 +9,7 @@ ca_cert_data: ""
 #@schema/validation one_not_null=["credentials", "secret", "aws_iam_role_arn"]
 kp_default_repository:
   #@schema/desc "The default repository to use for builder images and dependencies."
-  #@schema/examples ("Repository on GitHub Container Registry", "ghcr.io/thomasvitale/kpack")
+  #@schema/examples ("Repository on GitHub Container Registry", "ghcr.io/thomasvitale/buildpacks")
   #@schema/validation min_len=1
   name: ""
   #@schema/desc "Read/write credentials to access the default container repository."
@@ -26,6 +26,8 @@ kp_default_repository:
     name: ""
     #@schema/desc "The namespace of the Secret holding the credentials to access the default container repository."
     namespace: ""
+    #@schema/desc "Whether to create a SecretExport resource to export the Secret from the source namespace to the kpack namespace. Not needed when installing kpack as part of the Kadras Enginnering Platform."
+    create_export: false
   #@schema/desc "IAM credentials to access the default container repository if the registry is on AWS."
   #@schema/nullable
   aws_iam_role_arn: ""

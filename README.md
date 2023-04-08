@@ -76,7 +76,7 @@ The kpack package can be customized via a `values.yml` file.
 
   ```yaml
   kp_default_repository:
-    name: ghcr.io/thomasvitale/kpack
+    name: ghcr.io/thomasvitale/buildpacks
     credentials:
       username: "jon.snow"
       password: "youknownothing"
@@ -106,11 +106,12 @@ Settings for the default container repository used by kpack.
 
 | Config | Default | Description |
 |-------|-------------------|-------------|
-| `kp_default_repository.name` | `""` | The default repository to use for builder images and dependencies. For example, GitHub Container Registry: `ghcr.io/my-org/my-repo`; GCR: `gcr.io/my-project/my-repo`; Harbor: `myharbor.io/my-project/my-repo`, Dockerhub: `docker.io/my-username/my-repo`.|
+| `kp_default_repository.name` | `""` | The default repository to use for builder images and dependencies. For example, GitHub Container Registry: `ghcr.io/my-org/buildpacks`; GCR: `gcr.io/my-project/buildpacks`; Harbor: `myharbor.io/my-project/buildpacks`, Dockerhub: `docker.io/my-username/buildpacks`.|
 | `kp_default_repository.credentials.username` | `""` | Username to access the default container repository. Note: Use `_json_key` for GCR. |
 | `kp_default_repository.credentials.password` | `""` | Token to access the default container repository. Note: Use contents of service account key json for GCR. |
 | `kp_default_repository.secret.name` | `""` | The name of the Secret holding the credentials to access the default container repository. |
-| `kp_default_repository.secret.namespace` | `""` | he namespace of the Secret holding the credentials to access the default container repository. |
+| `kp_default_repository.secret.namespace` | `""` | The namespace of the Secret holding the credentials to access the default container repository. |
+| `kp_default_repository.secret.create_export` | `false` | Whether to create a SecretExport resource to export the Secret from the source namespace to the kpack namespace. Not needed when installing kpack as part of the Kadras Enginnering Platform. |
 | `kp_default_repository.aws_iam_role_arn` | `""` | IAM credentials to access the default container repository if the registry is on AWS. |
 
 Setting for the kpack controller.
