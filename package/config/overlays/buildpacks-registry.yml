@@ -111,6 +111,7 @@ secrets:
   - name: #@ get_default_registry_secret_name()
 #@ end
 
+#! Only used for information purpose.
 ---
 apiVersion: v1
 kind: ConfigMap

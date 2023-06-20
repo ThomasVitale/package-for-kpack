@@ -14,10 +14,10 @@ jobs:
     uses: kadras-io/github-reusable-workflows/.github/workflows/package-release.yml@main
     with:
       package-name-slug: kpack
-      package-name-display: Kpack
+      package-name-display: kpack
       registry-server: ghcr.io
       registry-username: ${{ github.actor }}
       image: ${{ github.repository }}
-      version: 0.10.1+kadras.1
+      version: 0.11.1
     secrets:
       pull-request-token: ${{ secrets.GH_ORG_PAT }}

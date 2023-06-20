@@ -26,6 +26,10 @@ ytt:
 schema:
 	ytt -f package/config/values-schema.yml --data-values-schema-inspect -o openapi-v3 > schema-openapi.yml
 
+# Use kbld to resolve the OCI images referenced within the manifests
+kbld:
+	rm -f package/.imgpkg/images.yml && mkdir -p package/.imgpkg && kbld --file package/config --imgpkg-lock-output package/.imgpkg/images.yml 1>> /dev/null
+
 # Check the ytt-annotated Kubernetes configuration and its validation
 test-config:
 	ytt -f package/config --data-values-file test/unit/config/values.yml | kubeconform -ignore-missing-schemas -summary
