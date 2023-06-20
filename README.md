@@ -12,7 +12,7 @@ A Carvel package for [kpack](https://github.com/pivotal/kpack), a Kubernetes-nat
 
 ### Prerequisites
 
-* Kubernetes 1.24+
+* Kubernetes 1.25+
 * Carvel [`kctrl`](https://carvel.dev/kapp-controller/docs/latest/install/#installing-kapp-controller-cli-kctrl) CLI.
 * Carvel [kapp-controller](https://carvel.dev/kapp-controller) deployed in your Kubernetes cluster. You can install it with Carvel [`kapp`](https://carvel.dev/kapp/docs/latest/install) (recommended choice) or `kubectl`.
 
@@ -26,10 +26,9 @@ A Carvel package for [kpack](https://github.com/pivotal/kpack), a Kubernetes-nat
 Add the Kadras [package repository](https://github.com/kadras-io/kadras-packages) to your Kubernetes cluster:
 
   ```shell
-  kubectl create namespace kadras-packages
   kctrl package repository add -r kadras-packages \
     --url ghcr.io/kadras-io/kadras-packages \
-    -n kadras-packages
+    -n kadras-packages --create-namespace
   ```
 
 <details><summary>Installation without package repository</summary>
@@ -128,7 +127,7 @@ Settings for the corporate proxy.
 |-------|-------------------|-------------|
 | `proxy.http_proxy` | `""` | The HTTP proxy to use for network traffic. |
 | `proxy.https_proxy` | `""` | The HTTPS proxy to use for network traffic. |
-| `proxy.no_proxy` | `""` | A comma-separated list of hostnames, IP addresses, or IP ranges in CIDR format that should not use a proxy. |
+| `proxy.no_proxy` | `""` | A comma-separated list of hostnames, IP addresses, or IP ranges in CIDR format that should not use a proxy (e.g. Kubernetes API address). |
 
 </details>
 

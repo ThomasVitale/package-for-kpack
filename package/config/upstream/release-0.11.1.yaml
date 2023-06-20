@@ -135,6 +135,38 @@ spec:
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
+  name: buildpacks.kpack.io
+spec:
+  group: kpack.io
+  versions:
+  - name: v1alpha2
+    served: true
+    storage: true
+    schema:
+      openAPIV3Schema:
+        type: object
+        x-kubernetes-preserve-unknown-fields: true
+    subresources:
+      status: {}
+    additionalPrinterColumns:
+    - name: Ready
+      type: string
+      jsonPath: .status.conditions[?(@.type=="Ready")].status
+  names:
+    kind: Buildpack
+    listKind: BuildpackList
+    singular: buildpack
+    plural: buildpacks
+    shortNames:
+    - bp
+    - bps
+    categories:
+    - kpack
+  scope: Namespaced
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
   name: clusterbuilders.kpack.io
 spec:
   group: kpack.io
@@ -179,6 +211,38 @@ spec:
     shortNames:
     - clstbldr
     - clstbldrs
+    categories:
+    - kpack
+  scope: Cluster
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: clusterbuildpacks.kpack.io
+spec:
+  group: kpack.io
+  versions:
+  - name: v1alpha2
+    served: true
+    storage: true
+    schema:
+      openAPIV3Schema:
+        type: object
+        x-kubernetes-preserve-unknown-fields: true
+    subresources:
+      status: {}
+    additionalPrinterColumns:
+    - name: Ready
+      type: string
+      jsonPath: .status.conditions[?(@.type=="Ready")].status
+  names:
+    kind: ClusterBuildpack
+    listKind: ClusterBuildpackList
+    singular: clusterbuildpack
+    plural: clusterbuildpacks
+    shortNames:
+    - clstbp
+    - clstbps
     categories:
     - kpack
   scope: Cluster
@@ -301,7 +365,7 @@ metadata:
   name: build-init-image
   namespace: kpack
 data:
-  image: gcr.io/cf-build-service-public/kpack/build-init@sha256:dc435942bf4bd03ad51a1033643c43699b5b305e743e9a01471cfb60d7a4e335
+  image: gcr.io/cf-build-service-public/kpack/build-init@sha256:2baaabaaaa0d5f8f2ae854de02602d96d1373a9fd9758ccd0cdc231d491cc5b1
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -309,7 +373,7 @@ metadata:
   name: build-init-windows-image
   namespace: kpack
 data:
-  image: gcr.io/cf-build-service-public/kpack/build-init-windows@sha256:5c6b4f632d6f5ddf98424464ad549e4e4df260f162e44e31754dcb2785d7c8e0
+  image: gcr.io/cf-build-service-public/kpack/build-init-windows@sha256:7c156f595229f4af64dbc8d5a20ac7affff6f665a94f751423b09fc66347cdd8
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -317,7 +381,7 @@ metadata:
   name: build-waiter-image
   namespace: kpack
 data:
-  image: gcr.io/cf-build-service-public/kpack/build-waiter@sha256:98f432953f32d0c8aba893878d48a58fe1ea4bda0a8aef69a57b24d1a124bc76
+  image: gcr.io/cf-build-service-public/kpack/build-waiter@sha256:ed735d7889dd0b7b5e26c3110bcb360c2c9cb294e0cbdbee898618d27ec31281
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -325,7 +389,7 @@ metadata:
   name: rebase-image
   namespace: kpack
 data:
-  image: gcr.io/cf-build-service-public/kpack/rebase@sha256:290fb4ec6a7e2dac25adebf08a555b8708d03e2d6a39af8dfa01d159b37f810e
+  image: gcr.io/cf-build-service-public/kpack/rebase@sha256:cbba6034cedfc025789eb19851a2fd97a6646b56f2f107a993c2231bce9f8845
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -341,7 +405,7 @@ metadata:
   name: completion-image
   namespace: kpack
 data:
-  image: gcr.io/cf-build-service-public/kpack/completion@sha256:7dc837880ead33ef2dddfad8e189e646dc1eb0b1efbb5a2be1276e8d08729da7
+  image: gcr.io/cf-build-service-public/kpack/completion@sha256:3870ba69c1d566d9db0d7bd53860a74708b6c8e32369c8824ad5188137062d7a
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -349,7 +413,7 @@ metadata:
   name: completion-windows-image
   namespace: kpack
 data:
-  image: gcr.io/cf-build-service-public/kpack/completion-windows@sha256:6d6aad705e6ab8fa19e9c9ebde394dac00552b591d5ba7f3fdf77bd73f0894b1
+  image: gcr.io/cf-build-service-public/kpack/completion-windows@sha256:ef4bbc0199cdb925827dc6895b556136f381e31fa035ce2b2aa9794685f57631
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -365,7 +429,7 @@ spec:
     metadata:
       labels:
         app: kpack-controller
-        version: 0.10.1-rc.3
+        version: 0.11.1
     spec:
       securityContext:
         runAsNonRoot: true
@@ -386,7 +450,7 @@ spec:
           capabilities:
             drop:
             - ALL
-        image: gcr.io/cf-build-service-public/kpack/controller@sha256:ecaa9774d8ef4536f1089b731d407a6f35774c1a52f4dd0ee92662d08e9c991b
+        image: gcr.io/cf-build-service-public/kpack/controller@sha256:cdf18b72de67ca770a8e7a5cb29e8280533138f348cb465e35ee9a8dba45029f
         env:
         - name: ENABLE_PRIORITY_CLASSES
           value: "false"
@@ -461,8 +525,12 @@ rules:
   - images/finalizers
   - builders
   - builders/status
+  - buildpacks
+  - buildpacks/status
   - clusterbuilders
   - clusterbuilders/status
+  - clusterbuildpacks
+  - clusterbuildpacks/status
   - clusterstores
   - clusterstores/status
   - clusterstacks
@@ -786,7 +854,7 @@ spec:
       labels:
         app: kpack-webhook
         role: webhook
-        version: 0.10.1-rc.3
+        version: 0.11.1
     spec:
       securityContext:
         runAsNonRoot: true
@@ -807,7 +875,7 @@ spec:
           capabilities:
             drop:
             - ALL
-        image: gcr.io/cf-build-service-public/kpack/webhook@sha256:39121532894b1bbbcde2331a411960171748c5e45fa47df9184e8f6bfd0b572f
+        image: gcr.io/cf-build-service-public/kpack/webhook@sha256:c94b5d7a8fa577a1a33c8775d96d67a996a1295fdb7576afe16093ec2d65cf3d
         ports:
         - name: https-webhook
           containerPort: 8443

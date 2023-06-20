@@ -1,6 +1,6 @@
 # Configuring a Self-Signed Certificate for a Private Registry
 
-If you need to interact with a private registry using a self-signed certificate, you can pass it as a PEM-encoded bundle when installing/upgrading the package. The controller will use it to establish a secure communication with the registry.
+If you need to interact with a private registry using a self-signed certificate, you can pass it as a PEM-encoded bundle when installing/upgrading the package. The controller will use it to establish a secure communication with external services, such as Git servers and container registries.
 
 Notice that the certificate will not be injected into the kpack builds. Instead, you'll need to use the cert injection webhook with the `kpack.io/build` label value.
 

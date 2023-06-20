@@ -110,13 +110,3 @@ imagePullSecrets:
 secrets:
   - name: #@ get_default_registry_secret_name()
 #@ end
-
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: kp-config
-  namespace: kpack
-data:
-  default.repository: #@ data.values.kp_default_repository.name
-  default.repository.serviceaccount: kp-default-repository-serviceaccount

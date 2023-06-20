@@ -54,5 +54,5 @@ proxy:
   https_proxy: ""
   #@schema/desc "The HTTP proxy to use for network traffic"
   http_proxy: ""
-  #@schema/desc "A comma-separated list of hostnames, IP addresses, or IP ranges in CIDR format that should not use a proxy"
+  #@schema/desc "A comma-separated list of hostnames, IP addresses, or IP ranges in CIDR format that should not use a proxy (e.g. Kubernetes API address)."
   no_proxy: ""
