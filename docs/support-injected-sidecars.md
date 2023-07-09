@@ -7,4 +7,4 @@ config:
   injected_sidecar_support: true
 ```
 
-For more information, check the kpack documentation for [injected sidecars](https://github.com/pivotal/kpack/blob/main/docs/injected_sidecars.md) and how they affect the CPU and memory configuration for the image build Pods.
+For more information, check the kpack documentation for [injected sidecars](https://github.com/buildpacks-community/kpack/blob/main/docs/injected_sidecars.md) and how they affect the CPU and memory configuration for the image build Pods.
