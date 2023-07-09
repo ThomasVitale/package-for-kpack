@@ -3,8 +3,8 @@ directories:
 - contents:
   - githubRelease:
       disableAutoChecksumValidation: true
-      slug: pivotal/kpack
-      tag: v0.11.1
+      slug: buildpacks-community/kpack
+      tag: v0.11.2
     includePaths:
     - release-*.yaml
     path: .

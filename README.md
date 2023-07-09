@@ -2,11 +2,11 @@
 
 ![Test Workflow](https://github.com/kadras-io/package-for-kpack/actions/workflows/test.yml/badge.svg)
 ![Release Workflow](https://github.com/kadras-io/package-for-kpack/actions/workflows/release.yml/badge.svg)
-[![The SLSA Level 3 badge](https://slsa.dev/images/gh-badge-level3.svg)](https://slsa.dev/spec/v0.1/levels)
+[![The SLSA Level 3 badge](https://slsa.dev/images/gh-badge-level3.svg)](https://slsa.dev/spec/v1.0/levels)
 [![The Apache 2.0 license badge](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Follow us on Twitter](https://img.shields.io/static/v1?label=Twitter&message=Follow&color=1DA1F2)](https://twitter.com/kadrasIO)
 
-A Carvel package for [kpack](https://github.com/pivotal/kpack), a Kubernetes-native implementation of Cloud Native Buildpacks to build OCI images from within the cluster.
+A Carvel package for [kpack](https://github.com/buildpacks-community/kpack), a Kubernetes-native implementation of Cloud Native Buildpacks to build OCI images from within the cluster.
 
 ## 🚀&nbsp; Getting Started
 
@@ -67,7 +67,7 @@ Verify the installed packages and their status:
 ## 📙&nbsp; Documentation
 
 Documentation, tutorials and examples for this package are available in the [docs](docs) folder.
-For documentation specific to kpack, check out [github.com/pivotal/kpack](https://github.com/pivotal/kpack).
+For documentation specific to kpack, check out [github.com/buildpacks-community/kpack](https://github.com/buildpacks-community/kpack).
 
 ## 🎯&nbsp; Configuration
 
