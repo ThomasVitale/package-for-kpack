@@ -44,6 +44,7 @@ rules:
       - kpack.io
     resources:
       - builders
+      - buildpacks
     verbs:
       - get
       - list
@@ -68,6 +69,7 @@ rules:
       - clusterbuilders
       - clusterstacks
       - clusterstores
+      - clusterbuildpacks
     verbs:
       - get
       - list
@@ -87,6 +89,7 @@ rules:
       - clusterbuilders
       - clusterstacks
       - clusterstores
+      - clusterbuildpacks
     verbs:
       - get
       - list
