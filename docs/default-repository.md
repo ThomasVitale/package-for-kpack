@@ -30,7 +30,7 @@ You can pass the container registry credentials via a Secret, which needs to be 
 kp_default_repository:
   secret:
     name: supply-chain-registry-credentials
-    namespace: kadras-packages
+    namespace: kadras-system
 ```
 
 If you use this package outside the Kadras Engineering Platform, you also need to configure it to export the Secret from the source namespace to the kpack namespace.
@@ -39,7 +39,7 @@ If you use this package outside the Kadras Engineering Platform, you also need t
 kp_default_repository:
   secret:
     name: supply-chain-registry-credentials
-    namespace: kadras-packages
+    namespace: kadras-system
     create_export: true
 ```
 
