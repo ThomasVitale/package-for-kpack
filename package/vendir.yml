@@ -4,7 +4,7 @@ directories:
   - githubRelease:
       disableAutoChecksumValidation: true
       slug: buildpacks-community/kpack
-      tag: v0.13.2
+      tag: v0.13.3
     includePaths:
     - release-*.yaml
     path: .
